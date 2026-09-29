@@ -54,3 +54,11 @@ dotnet run
 - For browser playback the source shows as "CHROME" / "EDGE"; the API doesn't expose which site is playing.
 - The equalizer is an animation, not a real audio level meter.
 - UI labels (tooltips, menu) are currently in Turkish.
+
+## Contributing
+
+Pull requests are welcome; please target the `dev` branch. See [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## License
+
+[Apache License 2.0](LICENSE)
