@@ -1,56 +1,56 @@
 # MediaIsland
 
-Windows masaüstü için Apple Dynamic Island tarzı "şu an çalıyor" adası. Sağ altta, görev
-çubuğunun hemen üstünde küçük siyah bir hap olarak durur; fareyle üzerine gelince açılır.
+A Dynamic Island–style "now playing" widget for the Windows desktop. It sits as a small black
+pill in the bottom-right corner, just above the taskbar, and expands when you hover over it.
 
-- **Kaynaklar:** Spotify, Chrome/Edge/Firefox'taki YouTube ve Windows'a medya bilgisi bildiren
-  her uygulama (Windows'un ortak medya API'si — GSMTC). Uygulamaya özel entegrasyon yok.
-- **Küçük hâl:** kapak + kapak renginde ekolayzır (duraklatınca noktaya iner).
-- **Açık hâl:** büyük kapak, kaynak / başlık / sanatçı, ilerleme çubuğu (tıklayarak sarma, kaynak
-  destekliyorsa), önceki / oynat-duraklat / sonraki.
-- Yeni parça başlayınca 3,5 sn kendiliğinden açılıp kapanır.
-- Vurgu rengi her parçada kapaktan çıkarılır ve kapağın arkasından adaya taşar.
-- Çalan bir şey yokken ve tam ekran video/oyun/sunum sırasında gizlenir.
-- Alt+Tab'da görünmez, tıklanınca odağı çalıştığın uygulamadan almaz.
-- Kapatmak için: adaya sağ tık → **MediaIsland'ı kapat**.
+- **Works with:** Spotify, YouTube in Chrome/Edge/Firefox, and any app that reports media to
+  Windows (through the system media API, GSMTC). No per-app integration.
+- **Compact:** cover art + an equalizer tinted with the cover's color (flattens to dots when paused).
+- **Expanded:** large cover, source / title / artist, progress bar (click to seek, when the source
+  supports it), previous / play-pause / next.
+- Pops open for 3.5 s when a new track starts.
+- The accent color is extracted from each track's cover and glows out from behind it.
+- Hides when nothing is playing and during fullscreen video, games or presentations.
+- Stays out of Alt+Tab and never steals focus from the app you're working in.
+- To quit: right-click the island → **MediaIsland'ı kapat** ("Close MediaIsland").
 
-## Gereksinim
+## Requirements
 
-Windows 10 2004+ / Windows 11, .NET 10 SDK.
+Windows 10 2004+ or Windows 11, .NET 10 SDK.
 
-## Kurulum
+## Install
 
 ```bash
 powershell -ExecutionPolicy Bypass -File kurulum.ps1
 ```
 
-Tek dosyalık `MediaIsland.exe`'yi `%LOCALAPPDATA%\Programs\MediaIsland` altına kurar, Başlat
-menüsüne kısayol ekler ve uygulamayı başlatır. Yönetici izni istemez. Kod değişince aynı komutu
-tekrar çalıştırmak yeterli (çalışan kopyayı kapatıp günceller). Exe, makinede .NET 10 Desktop
-Runtime olmasını bekler.
+Publishes a single-file `MediaIsland.exe` to `%LOCALAPPDATA%\Programs\MediaIsland`, adds a Start
+menu shortcut and launches it. No admin rights needed. Re-run the same command after changing the
+code; it closes the running instance and updates it. The exe requires the .NET 10 Desktop Runtime.
 
-Kapattıktan sonra tekrar açmak için Başlat menüsünde **MediaIsland** diye arat.
+To start it again after closing, search for **MediaIsland** in the Start menu.
 
-## Geliştirme
+## Development
 
 ```bash
 dotnet run
 ```
 
-## Yapı
+## Project structure
 
-| Dosya | Görev |
+| File | Purpose |
 |---|---|
-| `MediaService.cs` | GSMTC oturumlarını izler, hangi oturumun gösterileceğini seçer, komutları iletir |
-| `CoverArt.cs` | Kapağı yükler, YouTube'un siyah bantlarını kırpar, vurgu rengini çıkarır |
-| `MainWindow.xaml(.cs)` | Ada arayüzü, genişleme animasyonu, ilerleme, görünürlük |
-| `NativeMethods.cs` | Araç penceresi stili, tam ekran algılama |
-| `kurulum.ps1` | Yayınla + kullanıcı klasörüne kur + Başlat menüsü kısayolu |
-| `app.ico` | Uygulama ikonu (siyah ada + ekolayzır) |
+| `MediaService.cs` | Watches GSMTC sessions, picks which one to show, forwards commands |
+| `CoverArt.cs` | Loads the cover, trims YouTube's letterbox bars, extracts the accent color |
+| `MainWindow.xaml(.cs)` | Island UI, expand animation, progress, visibility |
+| `NativeMethods.cs` | Tool-window style, fullscreen detection |
+| `kurulum.ps1` | Publish + install to the user folder + Start menu shortcut |
+| `app.ico` | App icon (black island + equalizer) |
 
-## Bilinen sınırlar
+## Known limitations
 
-- Videonun kendisi gösterilmez, yalnızca kapak/küçük resim.
-- YouTube'da "önceki" genelde yalnız çalma listesinde etkin (tarayıcı öyle bildiriyor).
-- Tarayıcıda kaynak adı "CHROME/EDGE" görünür; hangi siteden geldiğini API vermiyor.
-- Ekolayzır gerçek ses seviyesini değil, animasyonu gösterir.
+- Shows the cover art / thumbnail only, not the video itself.
+- On YouTube, "previous" is usually only available inside a playlist (that's what the browser reports).
+- For browser playback the source shows as "CHROME" / "EDGE"; the API doesn't expose which site is playing.
+- The equalizer is an animation, not a real audio level meter.
+- UI labels (tooltips, menu) are currently in Turkish.
