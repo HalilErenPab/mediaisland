@@ -4,3 +4,4 @@ obj/
 *.user
 CLAUDE.local.md
 .claude/settings.local.json
+MEMORY.md
